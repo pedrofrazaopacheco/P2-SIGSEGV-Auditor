@@ -2,21 +2,21 @@ import random
 import sys
 import os
 
+EXECUTABLE_NAME = "project2"
+
 class Option:
     def __init__(self, weight, function):
         self.weight = weight
         self.function = function
 
-total_num_lines_of_test = random.randint(10, 1000)
 options = []
 routes = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "c12", "c13"]
 stops = ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13"]
 
-curr_connection_weight = 0.9
-curr_route_weight = 0.9
-
 connection_origin = "p1"
 connection_destiny = "p2"
+
+original_stdout = sys.stdout
 
 curr_route = "c1"
 
@@ -93,8 +93,6 @@ Option(0.1, l), Option(0.005, i), Option(0.075, r),
 Option(0.075, e), Option(0.0005, a)
 ]
 
-num = 1
-
 def select_random_option():
     global first_connection_var
     global curr_route
@@ -125,10 +123,10 @@ def select_random_option():
         first_connection_var = True
     # if (my_option.function.__name__ == "l")
     print(option_to_print)
-    print(f"o {num}")
-    num += 1
     
-with open('test', 'w') as f:
+original_stdout = sys.stdout
+
+with open('segfault_tester.txt', 'w') as f:
     # Redirect all stdout to the file
     sys.stdout = f
     for i in range(len(stops)):
@@ -137,9 +135,59 @@ with open('test', 'w') as f:
     for i in range(len(routes)):
         print(f"c {routes[i]}")
 
-    for i in range(5000):
+    for i in range(1000):
         select_random_option()
-    num = 1
     print("q")
 
-os.system('./project2 < ./test')
+if (os.system(f'./{EXECUTABLE_NAME} < ./segfault_tester.txt') != 0):
+    with open('segfault_tester.txt', 'r+') as f:
+        lines = []
+        for line in f:
+            lines.append(line.strip())
+
+    with open("segfault_tester.txt", "w") as f:
+        sys.stdout = f
+        print("q")
+
+    total_num = 0
+    lines_len = len(lines)
+
+    while (os.system(f'./{EXECUTABLE_NAME} < ./segfault_tester.txt') == 0):
+        with open('segfault_tester.txt', 'w') as f:
+            sys.stdout = f
+            for i in range(total_num):
+                print(lines[i])
+            total_num += 1
+            print("q")
+
+    middle_lines = lines[:total_num - 2]
+    last_lines = [lines[total_num - 2], "q"]
+
+    index_to_remove = -1
+    middle_lines_mod = middle_lines[:index_to_remove]
+
+    for i in range(len(middle_lines)):
+
+        with open('segfault_tester.txt', 'w') as f:
+            sys.stdout = f
+
+            if (index_to_remove != -1):
+                middle_lines_mod = middle_lines[:index_to_remove] + middle_lines[index_to_remove+1:]
+            else:
+                middle_lines_mod = middle_lines[:index_to_remove]
+
+            for item in middle_lines_mod:
+                print(item)
+
+            for item in last_lines:
+                print(item)
+
+            index_to_remove -= 1
+
+        if (os.system(f'./{EXECUTABLE_NAME} < ./segfault_tester.txt') != 0):
+            middle_lines = middle_lines_mod
+            index_to_remove += 1
+else:
+    sys.stdout = original_stdout
+    print("\nNo errors were found")
+    print("Please try again until the program starts optimizing a test for you")
