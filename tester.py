@@ -42,11 +42,11 @@ def p(chosen_stop, chosen_route, first):
 
 # p p1
 def p_1(chosen_stop, chosen_route, first):
-    return f"c {chosen_stop}"
+    return f"p {chosen_stop}"
 
 # p p1 1 1
 def p_2(chosen_stop, chosen_route, first):
-    return f"c {chosen_stop} 1 1"
+    return f"p {chosen_stop} 1 1"
 
 # l c1 p1 p2 1 1
 def l(chosen_stop, chosen_route, first):
@@ -86,12 +86,11 @@ def e(chosen_stop, chosen_route, first):
 def a(chosen_stop, chosen_route, first):
     return "a"
 
-
 option_list = [
-Option(0.1, c),
-Option(0.1, c_1), Option(0.1, c_2), Option(0.1, p),
-Option(0.1, p_1),Option(0.1, p_2), Option(0.1, l), Option(0.005, i),
-Option(0.075, r), Option(0.075, e), Option(0.0005, a)
+Option(0.1, c), Option(0.1, c_1), Option(0.1, c_2),
+Option(0.1, p), Option(0.1, p_1),Option(0.1, p_2),
+Option(0.1, l), Option(0.005, i), Option(0.075, r),
+Option(0.075, e), Option(0.0005, a)
 ]
 
 num = 1
@@ -126,11 +125,9 @@ def select_random_option():
         first_connection_var = True
     # if (my_option.function.__name__ == "l")
     print(option_to_print)
-    print(f"g {num}")
+    print(f"o {num}")
     num += 1
     
-
-# for e in range(1000):
 with open('test', 'w') as f:
     # Redirect all stdout to the file
     sys.stdout = f
