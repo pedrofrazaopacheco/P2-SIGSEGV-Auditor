@@ -10,14 +10,18 @@ This is a python script for generating random test cases for a C project.
 
 # IMPORTANT
 To check the last line before a segmentation fault, you should add a case to your c program like this, so that it appears the last printed number before the error!
+
 ```c
 case 'o':
     printf("%s\n", commands[1]);
     break;
 ```
 
+You then go to the *test* file and go to the line with the last printed number.
+**The next line was what caused your program crash**.
+
 
 ### Final note
 Run the program until you get a SIGSEGV error. Please do not modify the python program to make a loop of testing because that will not work.
 Only run once at a time, and statistically, a random test will be created that will crash your program
-Read the *Infinite monkey theorem*
+*Infinite monkey theorem*
