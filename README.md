@@ -6,7 +6,8 @@ This is a python script for generating a **small and compact** test for your pro
 - Clone the repo or download the tester.py
 - Put the tester.py in the same folder as your executable
 - Change the first variable **EXECUTABLE_NAME** to your name (not the .c program, just the executable)
-- Run python3 tester.py until the program stops with a segmentation fault error
+- Run python3 tester.py.
+- If your program does not stop in a few moments, it's creating an optimized test. Please be patient.
 - Check the optimized test file that made a small test that broke your program
 
 ### Final note
